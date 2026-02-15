@@ -180,17 +180,17 @@ export default function Home() {
 
       {/* Privacy notice */}
       <div className="max-w-2xl mx-auto px-5 mt-12">
-        <div className="p-4 bg-gray-50 rounded-xl text-sm text-gray-600 space-y-2">
-          <p className="font-semibold text-gray-700">Privacy and data</p>
-          <p>Your text is processed by Claude AI (Anthropic) and is <strong>not stored</strong> on our servers. Anthropic does not train on API data. No logs are kept. Your API key, if provided, stays in your browser only.</p>
-          <p className="text-gray-500">Please use your discretion when pasting sensitive or confidential information. This tool is provided as-is, without warranties.</p>
-        </div>
+        <p className="text-xs text-gray-400 text-center">
+          Your text is processed by Claude AI and is <strong>not stored</strong>. API keys stay in your browser only.
+        </p>
       </div>
 
-      <footer className="max-w-2xl mx-auto px-5 py-8 text-sm text-gray-400 flex items-center justify-between">
+      <footer className="max-w-2xl mx-auto px-5 py-8 text-sm text-gray-400 flex items-center justify-center gap-6">
         <a href="https://linkedin.com/in/ankitnakra" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">LinkedIn</a>
-        <span>Free to use</span>
-        <a href="https://github.com/ankitnakra1986/userstory-ai" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition-colors">Open source</a>
+        <span className="text-gray-300">·</span>
+        <span className="text-gray-300">Free to use</span>
+        <span className="text-gray-300">·</span>
+        <a href="https://github.com/ankitnakra1986/userstory-ai" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition-colors">Open source</a>
       </footer>
     </div>
   );
