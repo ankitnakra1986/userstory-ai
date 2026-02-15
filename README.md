@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UserStory.ai
+
+Convert any PRD into sprint-ready user stories in 60 seconds.
+
+An AI-powered tool that takes product requirement documents — PRDs, feature briefs, meeting notes, or any product description — and converts them into structured, INVEST-validated user stories with comprehensive acceptance criteria.
+
+## What it does
+
+- **INVEST-validated stories** — every story is checked for Independence, Negotiability, Value, Estimability, Size, and Testability
+- **4-category acceptance criteria** — Functional, Accessibility, Performance, and Error Handling
+- **Cross-cutting concerns** — automatically injects accessibility, security, performance, and error handling into relevant stories
+- **Story point estimates** — Fibonacci or T-shirt sizing
+- **Copy-to-clipboard** — individual stories or bulk copy, formatted as clean markdown ready for JIRA, Notion, or Confluence
+- **BYOK (Bring Your Own Key)** — uses your Anthropic API key. Key stays in your browser, never stored on any server.
+
+## Tech Stack
+
+- **Next.js 15** — React framework
+- **Tailwind CSS** — styling
+- **Claude 3.5 Haiku** — AI model (via Anthropic API)
+- **Vercel** — hosting
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js >= 18
+- An [Anthropic API key](https://console.anthropic.com/)
+
+### Install & Run
 
 ```bash
+git clone https://github.com/ankitnakra/userstory-ai.git
+cd userstory-ai
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and enter your Anthropic API key to start generating stories.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Paste** any product description — PRD, feature brief, or meeting notes
+2. **Configure** detail level, story point scale, and which cross-cutting concerns to include
+3. **Generate** — Claude AI converts your input into structured user stories
+4. **Copy** individual stories or all at once — clean markdown format, ready for JIRA
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+```
+Input (PRD text) → Next.js API Route → Claude 3.5 Haiku → Structured JSON → UI Cards
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The intelligence lives in the system prompt (`src/lib/prompt.ts`), which encodes PM best practices:
+- INVEST framework enforcement
+- Structured acceptance criteria template (functional, accessibility, performance, error handling)
+- Cross-cutting concern injection based on user configuration
+- Story sizing and complexity flagging
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Why I built this
 
-## Deploy on Vercel
+I spent 4 hours converting a PRD into JIRA stories last week. Not writing the PRD — just the mechanical decomposition. Every PM does this. The hardest parts:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Making sure nothing falls through the cracks (accessibility, error handling, edge cases)
+2. Writing acceptance criteria that developers can actually build from
+3. Keeping stories small enough to estimate but complete enough to be useful
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This tool automates the tedious part so PMs can focus on the thinking part.
+
+## Built by
+
+**Ankit Nakra** — Product & AI Leader
+- [LinkedIn](https://linkedin.com/in/ankitnakra)
+- [GitHub](https://github.com/ankitnakra)
