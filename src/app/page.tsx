@@ -190,7 +190,7 @@ export default function Home() {
       <footer className="max-w-2xl mx-auto px-5 py-8 text-sm text-gray-400 flex items-center justify-between">
         <a href="https://linkedin.com/in/ankitnakra" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">LinkedIn</a>
         <span>Free to use</span>
-        <span className="text-gray-300">Open source</span>
+        <a href="https://github.com/ankitnakra1986/userstory-ai" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition-colors">Open source</a>
       </footer>
     </div>
   );
