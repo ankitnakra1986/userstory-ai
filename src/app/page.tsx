@@ -58,6 +58,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [showDemo, setShowDemo] = useState(false);
   const [needsKey, setNeedsKey] = useState(false);
+  const [showInput, setShowInput] = useState(true);
   const outputRef = useRef<HTMLDivElement>(null);
 
   const [generationTime, setGenerationTime] = useState<number | null>(null);
@@ -89,6 +90,7 @@ export default function Home() {
 
       setGenerationTime(Math.round((Date.now() - startTime) / 1000));
       setResult(data as GenerationResponse);
+      setShowInput(false);
       setTimeout(() => {
         outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -118,13 +120,36 @@ export default function Home() {
           PMs save hours. Developers get clarity. Nothing falls through the cracks.
         </p>
 
-        {/* Form */}
-        {!result && (
+        {/* Form — always mounted to preserve PRD text, hidden via CSS when collapsed */}
+        <div className={result && !showInput ? 'hidden' : isLoading ? 'hidden' : ''}>
           <InputForm
             onGenerate={handleGenerate}
             isLoading={isLoading}
             needsKey={needsKey}
           />
+        </div>
+
+        {/* Collapsed input toggle — show when results exist and input is hidden */}
+        {result && !showInput && !isLoading && (
+          <button
+            onClick={() => setShowInput(true)}
+            className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 font-medium transition-colors mb-2"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Edit requirements & regenerate
+          </button>
+        )}
+
+        {/* Hide input button when results exist and input is showing */}
+        {result && showInput && !isLoading && (
+          <button
+            onClick={() => setShowInput(false)}
+            className="mt-2 text-xs text-gray-400 hover:text-gray-600 font-medium transition-colors"
+          >
+            Hide input
+          </button>
         )}
 
         {/* Error */}
@@ -139,7 +164,7 @@ export default function Home() {
 
         {/* Output */}
         {result && !isLoading && (
-          <div ref={outputRef} className="mt-2 animate-fadeIn">
+          <div ref={outputRef} className="mt-4 animate-fadeIn">
             {/* Impact banner */}
             {generationTime && (
               <div className="mb-4 p-4 bg-green-50 rounded-xl">
@@ -152,29 +177,24 @@ export default function Home() {
               </div>
             )}
             <StoryOutput data={result} />
-            <button
-              onClick={() => setResult(null)}
-              className="mt-6 text-sm text-blue-600 font-medium hover:underline"
-            >
-              Generate new stories
-            </button>
           </div>
         )}
 
-        {/* Demo */}
+        {/* Demo — only when no results yet */}
         {!result && !isLoading && (
-          <button
-            onClick={() => setShowDemo(!showDemo)}
-            className="mt-5 text-sm text-blue-600 font-medium hover:underline"
-          >
-            {showDemo ? 'Hide example' : 'See example output'}
-          </button>
-        )}
-
-        {showDemo && !isLoading && !result && (
-          <div className="mt-5 animate-fadeIn">
-            <StoryOutput data={DEMO_OUTPUT} isDemo />
-          </div>
+          <>
+            <button
+              onClick={() => setShowDemo(!showDemo)}
+              className="mt-5 text-sm text-blue-600 font-medium hover:underline"
+            >
+              {showDemo ? 'Hide example' : 'See example output'}
+            </button>
+            {showDemo && (
+              <div className="mt-5 animate-fadeIn">
+                <StoryOutput data={DEMO_OUTPUT} isDemo />
+              </div>
+            )}
+          </>
         )}
       </main>
 

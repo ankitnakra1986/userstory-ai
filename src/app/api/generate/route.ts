@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export const maxDuration = 60;
 import Anthropic from '@anthropic-ai/sdk';
 import { buildSystemPrompt, buildUserPrompt } from '@/lib/prompt';
-import { GenerationConfig, GenerationResponse } from '@/lib/types';
+import { GenerationConfig } from '@/lib/types';
+import { hasMinQuality, tryParseStories } from '@/lib/validation';
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,6 +40,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!hasMinQuality(prd)) {
+      return NextResponse.json(
+        { error: "Your input doesn't look like product requirements. Try pasting a PRD, feature description, or meeting notes with enough context." },
+        { status: 400 }
+      );
+    }
+
     // Rate limiting for free tier (server key) — check cookie
     if (!userKey) {
       const usageCount = parseInt(request.cookies.get('userstory-usage')?.value || '0');
@@ -64,15 +72,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unexpected response. Please try again.' }, { status: 500 });
     }
 
-    let parsed: GenerationResponse;
-    try {
-      let jsonText = content.text.trim();
-      if (jsonText.startsWith('```')) {
-        jsonText = jsonText.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
-      }
-      parsed = JSON.parse(jsonText);
-    } catch {
-      return NextResponse.json({ error: 'Failed to parse response. Please try again.' }, { status: 500 });
+    let parsed = tryParseStories(content.text);
+
+    // Retry once if parse failed
+    if (!parsed) {
+      const retry = await client.messages.create({
+        model: 'claude-3-5-haiku-latest',
+        max_tokens: 4096,
+        messages: [
+          { role: 'user', content: buildUserPrompt(prd) },
+          { role: 'assistant', content: content.text },
+          { role: 'user', content: 'Not valid JSON. Respond ONLY with a JSON object matching the schema. No explanation.' },
+        ],
+        system: buildSystemPrompt(config),
+      });
+      const rc = retry.content[0];
+      if (rc.type === 'text') parsed = tryParseStories(rc.text);
+    }
+
+    if (!parsed) {
+      return NextResponse.json(
+        { error: "Couldn't generate stories from this input. Try adding more detail about the feature." },
+        { status: 422 }
+      );
+    }
+
+    if (!parsed.stories || !Array.isArray(parsed.stories) || parsed.stories.length === 0) {
+      return NextResponse.json(
+        { error: 'No stories generated. Add more detail about the feature or product.' },
+        { status: 422 }
+      );
     }
 
     // Increment usage counter for free tier

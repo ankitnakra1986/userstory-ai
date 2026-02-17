@@ -56,9 +56,18 @@ export default function InputForm({ onGenerate, isLoading, needsKey }: InputForm
           className="w-full px-4 py-3.5 border border-gray-200 rounded-2xl text-[15px] text-gray-900 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all resize-y leading-relaxed placeholder:text-gray-400"
         />
 
-        {charCount > 0 && charCount < 50 && (
-          <p className="text-xs text-gray-500 mt-1">{50 - charCount} more characters needed</p>
-        )}
+        <div className="flex items-center justify-between mt-1.5">
+          {charCount > 0 && charCount < 50 ? (
+            <p className="text-xs text-amber-600 font-medium">{50 - charCount} more characters needed</p>
+          ) : (
+            <span />
+          )}
+          {charCount > 0 && (
+            <p className={`text-xs ${charCount > 14000 ? 'text-amber-600 font-medium' : 'text-gray-400'}`}>
+              {charCount.toLocaleString()} / 15,000
+            </p>
+          )}
+        </div>
 
         <div className="flex items-center justify-between mt-3">
           <button
@@ -161,6 +170,43 @@ export default function InputForm({ onGenerate, isLoading, needsKey }: InputForm
                 );
               })}
             </div>
+          </div>
+
+          {/* API Key */}
+          <div className="pt-3 border-t border-gray-200">
+            <label className="block text-sm text-gray-700 font-medium mb-1">Claude API key</label>
+            <div className="flex gap-2">
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="sk-ant-... (optional — 3 free tries included)"
+                className="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none"
+              />
+              <button
+                type="button"
+                onClick={saveKey}
+                disabled={!apiKey.trim()}
+                className={`px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${
+                  apiKey.trim()
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                }`}
+              >
+                Save
+              </button>
+            </div>
+            {apiKey.trim() && (
+              <p className="text-xs text-green-600 mt-1 font-medium">Key saved locally — never sent to our servers</p>
+            )}
+            {!apiKey.trim() && (
+              <p className="text-xs text-gray-400 mt-1">
+                Free to create at{' '}
+                <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                  console.anthropic.com
+                </a>
+              </p>
+            )}
           </div>
         </div>
       )}
