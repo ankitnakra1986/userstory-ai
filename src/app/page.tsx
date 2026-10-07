@@ -206,7 +206,7 @@ export default function Home() {
       </div>
 
       <footer className="max-w-2xl mx-auto px-5 py-8 text-sm text-gray-400 flex items-center justify-center gap-6">
-        <a href="https://linkedin.com/in/ankitnakra" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/ankitnakra" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">LinkedIn</a>
         <span className="text-gray-300">·</span>
         <span className="text-gray-300">Free to use</span>
         <span className="text-gray-300">·</span>
