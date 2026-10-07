@@ -30,7 +30,7 @@ An AI-powered tool that takes product requirement documents — PRDs, feature br
 ### Install & Run
 
 ```bash
-git clone https://github.com/ankitnakra/userstory-ai.git
+git clone https://github.com/ankitnakra1986/userstory-ai.git
 cd userstory-ai
 npm install
 npm run dev
@@ -70,5 +70,5 @@ This tool automates the tedious part so PMs can focus on the thinking part.
 ## Built by
 
 **Ankit Nakra** — Product & AI Leader
-- [LinkedIn](https://linkedin.com/in/ankitnakra)
-- [GitHub](https://github.com/ankitnakra)
+- [LinkedIn](https://www.linkedin.com/in/ankitnakra)
+- [GitHub](https://github.com/ankitnakra1986)

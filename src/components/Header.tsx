@@ -10,7 +10,7 @@ export default function Header() {
           </h1>
         </div>
         <a
-          href="https://github.com/ankitnakra/userstory-ai"
+          href="https://github.com/ankitnakra1986/userstory-ai"
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
