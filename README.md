@@ -59,7 +59,7 @@ The intelligence lives in the system prompt (`src/lib/prompt.ts`), which encodes
 
 ## Why I built this
 
-I spent 4 hours converting a PRD into JIRA stories last week. Not writing the PRD — just the mechanical decomposition. Every PM does this. The hardest parts:
+I once spent 4 hours converting a PRD into JIRA stories. Not writing the PRD — just the mechanical decomposition. Every PM does this. The hardest parts:
 
 1. Making sure nothing falls through the cracks (accessibility, error handling, edge cases)
 2. Writing acceptance criteria that developers can actually build from
